@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "283777561320",
+    "project_id": "grocerystore-536a1",
+    "storage_bucket": "grocerystore-536a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283777561320:android:3bc72d610f0add09e94f5d",
+        "android_client_info": {
+          "package_name": "com.example.baqala"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAugin5zgEzyV2GN2dKrLz20jiJqfvsJo0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283777561320:android:1154463229dc39e0e94f5d",
+        "android_client_info": {
+          "package_name": "com.example.grocory_store"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAugin5zgEzyV2GN2dKrLz20jiJqfvsJo0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
