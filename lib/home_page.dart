@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:quickalert/quickalert.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -190,14 +191,26 @@ class _MyHomePageState extends State<MyHomePage> {
                                 IconButton(
                                   icon: Icon(Icons.edit),
                                   onPressed: () {
-                                    _editGroceryRecord(docId, username,
-                                        groceryItems, fees);
+                                    _editGroceryRecord(
+                                        docId, username, groceryItems, fees);
                                   },
                                 ),
                                 IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: () {
-                                    _deleteGroceryRecord(docId);
+                                    QuickAlert.show(
+                                      context: context,
+                                      type: QuickAlertType.confirm,
+                                      text: 'Do you want to delete this item?',
+                                      confirmBtnText: 'Yes',
+                                      cancelBtnText: 'No',
+                                      confirmBtnColor: Colors.red,
+                                      onConfirmBtnTap: () {
+                                        _deleteGroceryRecord(docId);
+                                        Navigator.of(context)
+                                            .pop(); // Close the dialog
+                                      },
+                                    );
                                   },
                                 ),
                               ],
@@ -244,8 +257,8 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 final double updatedFees =
                     double.tryParse(_feesController.text) ?? 0.0;
-                _updateGroceryRecord(docId, username, _groceryItemsController.text,
-                    updatedFees)
+                _updateGroceryRecord(docId, username,
+                        _groceryItemsController.text, updatedFees)
                     .then((_) {
                   _groceryItemsController.clear();
                   _feesController.clear();
