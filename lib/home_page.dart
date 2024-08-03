@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
-import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -232,7 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
               }
 
               double totalFees = data.docs
-                  .map((doc) => doc['fees'] as double)
+                  .map((doc) => (doc['fees'] as num).toDouble())
                   .reduce((value, element) => value + element);
 
               return Column(
