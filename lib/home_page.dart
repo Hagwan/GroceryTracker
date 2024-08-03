@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:quickalert/quickalert.dart';
+import 'package:provider/provider.dart';
+import 'theme_provider.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -79,6 +80,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Grocery Tracker'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.brightness_6),
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Center(child: Text('$_username')),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -91,19 +104,59 @@ class _MyHomePageState extends State<MyHomePage> {
     final TextEditingController _usernameController = TextEditingController();
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        TextField(
-          controller: _usernameController,
-          decoration: InputDecoration(labelText: 'Enter your name'),
+        const Text(
+          'Welcome to Grocery Tracker',
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.blueAccent,
+          ),
         ),
         SizedBox(height: 20),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 7,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            child: TextField(
+              style: TextStyle(color: Colors.black),
+              controller: _usernameController,
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Enter your name',
+                hintStyle: TextStyle(color: Colors.grey),
+                icon: Icon(Icons.person, color: Colors.blueAccent),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
         ElevatedButton(
           onPressed: () {
             if (_usernameController.text.isNotEmpty) {
               _saveUsername(_usernameController.text);
             }
           },
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+            textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            foregroundColor: Colors.blueAccent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
           child: Text('Save Name'),
         ),
       ],
@@ -113,20 +166,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildMainContent() {
     return Column(
       children: [
-        Text(
-          'Hello, $_username!',
-          style: TextStyle(fontSize: 24),
-        ),
         TextField(
           controller: _groceryItemsController,
-          decoration: InputDecoration(labelText: 'Grocery Items'),
+          decoration: InputDecoration(labelText: 'Items'),
         ),
         TextField(
           controller: _feesController,
-          decoration: InputDecoration(labelText: 'Fees'),
+          decoration: InputDecoration(labelText: '\$'),
           keyboardType: TextInputType.number,
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 30),
         ElevatedButton(
           onPressed: () {
             if (_groceryItemsController.text.isNotEmpty &&
@@ -164,6 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               return Column(
                 children: [
+                  SizedBox(height: 10),
                   Text(
                     'Total Fees: \$${totalFees.toStringAsFixed(2)}',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -198,19 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: () {
-                                    QuickAlert.show(
-                                      context: context,
-                                      type: QuickAlertType.confirm,
-                                      text: 'Do you want to delete this item?',
-                                      confirmBtnText: 'Yes',
-                                      cancelBtnText: 'No',
-                                      confirmBtnColor: Colors.red,
-                                      onConfirmBtnTap: () {
-                                        _deleteGroceryRecord(docId);
-                                        Navigator.of(context)
-                                            .pop(); // Close the dialog
-                                      },
-                                    );
+                                    _deleteGroceryRecord(docId);
                                   },
                                 ),
                               ],
