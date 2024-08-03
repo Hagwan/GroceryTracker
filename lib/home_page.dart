@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
+import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -72,24 +73,24 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Grocery Tracker'),
+        title: const Text('Grocery Tracker'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.brightness_6),
-            onPressed: () {
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-            },
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Center(child: Text('$_username')),
+          ),
+          IconButton(
+            icon: const Icon(Icons.brightness_6),
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
           ),
         ],
       ),
@@ -114,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.blueAccent,
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -124,14 +125,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 7,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: TextField(
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
               controller: _usernameController,
               decoration: const InputDecoration(
                 border: InputBorder.none,
@@ -142,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         ElevatedButton(
           onPressed: () {
             if (_usernameController.text.isNotEmpty) {
@@ -150,14 +151,15 @@ class _MyHomePageState extends State<MyHomePage> {
             }
           },
           style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-            textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+            textStyle:
+                const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             foregroundColor: Colors.blueAccent,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
             ),
           ),
-          child: Text('Save Name'),
+          child: const Text('Save Name'),
         ),
       ],
     );
@@ -167,16 +169,38 @@ class _MyHomePageState extends State<MyHomePage> {
     return Column(
       children: [
         TextField(
+          cursorColor: Colors.blueAccent,
           controller: _groceryItemsController,
-          decoration: InputDecoration(labelText: 'Items'),
+          decoration: const InputDecoration(
+              labelText: 'Items',
+              icon: Icon(
+                Icons.shopping_cart,
+                color: Colors.blueAccent,
+              )),
         ),
         TextField(
+          cursorColor: Colors.blueAccent,
           controller: _feesController,
-          decoration: InputDecoration(labelText: '\$'),
+          decoration: const InputDecoration(
+            labelText: 'Bill Amount',
+            icon: Icon(Icons.attach_money, color: Colors.blueAccent),
+            focusColor: Colors.blueAccent,
+            fillColor: Colors.blueAccent,
+            hoverColor: Colors.blueAccent,
+          ),
           keyboardType: TextInputType.number,
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
         ElevatedButton(
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all(
+                const EdgeInsets.symmetric(horizontal: 15, vertical: 15)),
+            textStyle: MaterialStateProperty.all(
+                const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+            foregroundColor: MaterialStateProperty.all(Colors.blueAccent),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15))),
+          ),
           onPressed: () {
             if (_groceryItemsController.text.isNotEmpty &&
                 _feesController.text.isNotEmpty) {
@@ -188,14 +212,14 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             }
           },
-          child: Text('Add Record'),
+          child: const Text('Add Record'),
         ),
         Expanded(
           child: StreamBuilder<QuerySnapshot>(
             stream: _getGroceryRecords(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
 
               if (snapshot.hasError) {
@@ -204,7 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               final data = snapshot.data;
               if (data == null || data.docs.isEmpty) {
-                return Center(child: Text('No records added yet.'));
+                return const Center(child: Text('No records added yet.'));
               }
 
               double totalFees = data.docs
@@ -213,11 +237,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
               return Column(
                 children: [
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Total Fees: \$${totalFees.toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
+
+                  // Add WidgetAndTextAnimator here
+
                   Expanded(
                     child: ListView.builder(
                       itemCount: data.docs.length,
@@ -239,14 +267,14 @@ class _MyHomePageState extends State<MyHomePage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: Icon(Icons.edit),
+                                  icon: const Icon(Icons.edit),
                                   onPressed: () {
                                     _editGroceryRecord(
                                         docId, username, groceryItems, fees);
                                   },
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.delete),
+                                  icon: const Icon(Icons.delete),
                                   onPressed: () {
                                     _deleteGroceryRecord(docId);
                                   },
@@ -275,17 +303,17 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Edit Grocery Record'),
+          title: const Text('Edit Grocery Record'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: _groceryItemsController,
-                decoration: InputDecoration(labelText: 'Grocery Items'),
+                decoration: const InputDecoration(labelText: 'Grocery Items'),
               ),
               TextField(
                 controller: _feesController,
-                decoration: InputDecoration(labelText: 'Fees'),
+                decoration: const InputDecoration(labelText: 'Fees'),
                 keyboardType: TextInputType.number,
               ),
             ],
@@ -303,13 +331,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.of(context).pop();
                 });
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );
