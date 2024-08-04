@@ -1,16 +1,33 @@
-# baqala
+# Grocery Tracker
 
-A new Flutter project.
+Grocery Tracker is a Flutter-based application designed to help users manage their grocery shopping lists and keep track of their groceries efficiently. This project also includes web support, allowing users to access their grocery tracker from any web browser.
 
-## Getting Started
+## Purpose
+This project was created for my family to help them check how much they consume at the grocery store. The development of this application was completed in less than 4 hours of work.
 
-This project is a starting point for a Flutter application.
+## Features
+Add, edit, and delete grocery items.
 
-A few resources to get you started if this is your first Flutter project:
+Categorize items by type.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Track quantities and prices.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Sync data across multiple devices.
+
+Web support for easy access from any browser.
+
+
+## Installation
+Flutter SDK: Installation Guide
+
+Firebase CLI: Installation Guide
+
+```bash
+git clone https://github.com/Hagwan/GroceryTracker.git
+cd GroceryTracker
+```
+### Install dependencies:
+```bash
+flutter pub get
+```
+
